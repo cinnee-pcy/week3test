@@ -32,6 +32,7 @@ class MyStatefulWidget extends StatefulWidget {
 class _MyWidgetState extends State<MyStatefulWidget> {
   int counter = 0;
   int clear = 0;
+  String err = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,15 +60,22 @@ class _MyWidgetState extends State<MyStatefulWidget> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ElevatedButton(
-                      onPressed: () {
-                        setState(() {
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.deepPurpleAccent,
+                      foregroundColor: Colors.white,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        if (counter <= 0) {
+                          counter = 0;
+                          err = '*Can not less than 0';
+                        } else {
                           counter--;
-                          if (counter < 0) {
-                            counter = 0;
-                          }
-                        });
-                      },
-                      child: const Icon(Icons.remove)),
+                        }
+                      });
+                    },
+                    child: const Icon(Icons.remove),
+                  ),
                   const SizedBox(
                     width: 20,
                   ),
@@ -75,6 +83,7 @@ class _MyWidgetState extends State<MyStatefulWidget> {
                       onPressed: () {
                         setState(() {
                           counter = 0;
+                          err = '';
                         });
                       },
                       child: const Text('Clear')),
@@ -82,14 +91,23 @@ class _MyWidgetState extends State<MyStatefulWidget> {
                     width: 20,
                   ),
                   ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.deepPurpleAccent,
+                        foregroundColor: Colors.white,
+                      ),
                       onPressed: () {
                         setState(() {
                           counter++;
+                          err = '';
                         });
                       },
                       child: const Icon(Icons.add))
                 ],
               ),
+              Text(
+                '$err',
+                style: const TextStyle(color: Colors.red),
+              )
             ],
           ),
         ));
